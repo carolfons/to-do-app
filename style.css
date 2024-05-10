@@ -1,0 +1,141 @@
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+
+}
+
+*::before,
+*::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.6rem;
+    color: #3d3f43;
+    background: #00B4DB;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #5299b0, #08667b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #5299b0, #08667b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+
+.container {
+    max-width: 400px;
+    padding: 25px;
+    margin: 30px auto 30px auto;
+    text-align: center;
+    background: #005AA7;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #d5d3bf, #1d95af);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #d5d3bf, #1d95af);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    border-radius: 6px;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, .3);
+   
+}
+
+.container h1 {
+    margin-bottom: 30px;
+}
+
+.container input {
+    background-color: #fffef6;
+}
+
+.container button {
+    cursor: pointer;
+}
+
+.container input,
+.container button {
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, .3);
+    border-radius: 7px;
+    border: 1px solid #4a4a4a7e;
+    font-size: 1.6rem;
+    line-height: 2rem;
+    margin-bottom: 10px;
+    padding: 1rem;
+}
+
+/*lista de notas*/
+.container ul {
+    text-align: initial;
+}
+
+.list-container {
+    max-width: 400px;
+    padding: 5px;
+    margin: 30px auto 30px auto;
+
+
+}
+
+.to-do-list {
+    padding-left: 0;
+}
+
+.to-do-list li {
+
+    display: grid;
+    grid-template-columns: 37px 4fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 'check item button';
+    justify-content: space-between;
+
+    list-style: none;
+    align-items: center;
+    padding: 5px;
+    margin: 7px;
+    text-decoration: solid;
+    background: -webkit-linear-gradient(to right, #d5d3bf, #FFFDE4);
+    background: linear-gradient(to right, #d5d3bf, #FFFDE4);
+    border-radius: 6px;
+    border: 1px solid #4a4a4a7e;
+    box-shadow: 1px 1px 20px 0px #00000021;
+}
+
+.to-do-list button {
+    padding: 3px 5px 3px 5px;
+   
+}
+
+/*classes criadas no js*/
+
+.div-btns {
+    grid-area: button;
+    display: flex;
+}
+
+.clear-item-btn {
+    content: x;
+    border-radius: .4rem;
+    color: rgb(255, 255, 255);
+    background-color: rgb(245, 61, 61);
+    font-size: 1.2rem;
+    margin: 5px;
+    border: none;
+    
+}
+
+.done-item-btn {
+    content: Done;
+    border-radius: .4rem;
+    color: rgb(255, 255, 255);
+    background-color: rgb(102, 182, 104);
+    font-size: 1.2rem;
+    margin: 5px;
+    border: none;
+
+}
+
+.check {
+    grid-area: check;
+    font-size: 2rem;
+    margin-left: .1rem;
+
+}
