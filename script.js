@@ -1,85 +1,81 @@
-const textInput = document.querySelector('.text-input'); // input texto
-const toDoList = document.querySelector('.to-do-list'); // container da lista de a fazeres
-const submitBtn = document.querySelector('.submit-btn') // botão 'ok'
-const clearListBtn = document.querySelector('.clear-list-btn')
+document.addEventListener('DOMContentLoaded', () => {
+    const taskInput = document.getElementById('task-input');
+    const addTaskButton = document.getElementById('add-task-button');
+    const taskList = document.getElementById('task-list');
 
-//evento de click no botão para enviar
-submitBtn.addEventListener('click', function () {
-    if (!textInput.value)
-        textInput.style.border = '2px solid #d54141'
-    else
-        addTopicsToList();
-});
+    addTaskButton.addEventListener('click', addTask);
+    loadTasks(); // Carrega as tarefas do Local Storage ao carregar a página
 
-// evento de enviar pressionado a tecla 'enter'
-textInput.addEventListener('keypress', function (event) {
-    if (!textInput.value)
-        textInput.style.border = '2px solid #d54141'
-    else if (event.key === 'Enter') {
-        addTopicsToList();
-        event.preventDefault();
+    function addTask() {
+        const taskText = taskInput.value.trim();
+        if (taskText !== '') {
+            const listItem = createTaskItem(taskText);
+            taskList.appendChild(listItem);
+            taskInput.value = '';
+            taskInput.focus();
+            saveTasks(); // Salva as tarefas no Local Storage
+        }
     }
 
-});
+    function createTaskItem(taskText, completed = false) {
+        const listItem = document.createElement('li');
 
-//limpar a lista
-clearListBtn.addEventListener('click', function () {
-    toDoList.innerHTML = '';
-});
+        if (completed) {
+            listItem.classList.add('completed');
+        }
 
-//função para adicionar um tópico na lista e apagar quando feito
-function addTopicsToList() {
+        const taskSpan = document.createElement('span');
+        taskSpan.textContent = taskText;
+        listItem.appendChild(taskSpan);
 
-    textInput.style.border = '1px solid rgb(118, 118, 118)';
-    const checkBtn = document.createElement('div');
-    checkBtn.textContent = '👉';
-    checkBtn.classList.add('check');
-
-    const newBtnsDiv = document.createElement('div');
-    newBtnsDiv.classList.add('div-bts')
-
-    const clearItemBtn = document.createElement('button');
-    clearItemBtn.textContent = 'X';
-    clearItemBtn.classList.add('clear-item-btn');
-    newBtnsDiv.appendChild(clearItemBtn);
-
-    const doneItemBtn = document.createElement('button');
-    doneItemBtn.textContent = 'Done'
-    doneItemBtn.classList.add('done-item-btn')
-    newBtnsDiv.appendChild(doneItemBtn);
-
-    const newItem = document.createElement('li')
-    const newItemText = document.createElement('p')
-    newItemText.textContent = textInput.value
-    newItem.appendChild(checkBtn)
-    newItem.appendChild(newItemText)
-    newItem.appendChild(newBtnsDiv)
-
-    toDoList.appendChild(newItem)
-
-
-    const clearBtn = document.querySelectorAll('.clear-item-btn');
-    const doneBtn = document.querySelectorAll('.done-item-btn');
-
-    clearBtn.forEach((btn) => {
-        btn.addEventListener('click', function (e) {
-            btn.parentElement.parentElement.remove()
+        const completeButton = document.createElement('button');
+        completeButton.textContent = '✔';
+        completeButton.className = 'complete';
+        completeButton.addEventListener('click', () => {
+            listItem.classList.toggle('completed');
+            saveTasks(); // Salva as tarefas no Local Storage
         });
-    });
+        listItem.appendChild(completeButton);
 
-    doneBtn.forEach((btn) => {
+        const editButton = document.createElement('button');
+        editButton.textContent = '✏';
+        editButton.className = 'edit';
+        editButton.addEventListener('click', () => {
+            const newTaskText = prompt('Edite a tarefa:', taskSpan.textContent);
+            if (newTaskText !== null) {
+                taskSpan.textContent = newTaskText;
+                saveTasks(); // Salva as tarefas no Local Storage
+            }
+        });
+        listItem.appendChild(editButton);
 
-        btn.addEventListener('click', function (e) {
-            btn.parentElement.parentElement.firstChild.innerHTML = '✅'
-            const listElement = document.querySelector('li').style.textDecoration = 'line-through'
-            listElemnt.style.textDecoration = "line-through";
-        })
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '✖';
+        deleteButton.className = 'delete';
+        deleteButton.addEventListener('click', () => {
+            taskList.removeChild(listItem);
+            saveTasks(); // Salva as tarefas no Local Storage
+        });
+        listItem.appendChild(deleteButton);
 
-    });
+        return listItem;
+    }
 
-    textInput.value = "";
-}
+    function saveTasks() {
+        const tasks = [];
+        taskList.querySelectorAll('li').forEach(listItem => {
+            const taskText = listItem.querySelector('span').textContent;
+            const completed = listItem.classList.contains('completed');
+            tasks.push({ text: taskText, completed });
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
 
-
-
-
+    function loadTasks() {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.forEach(task => {
+            const listItem = createTaskItem(task.text, task.completed);
+            taskList.appendChild(listItem);
+        });
+    }
+});
